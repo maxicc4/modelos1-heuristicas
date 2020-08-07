@@ -1,7 +1,6 @@
-# Si hay empate me quedo con el banco que tenga numero de indice menor
 from time import time
 
-
+# Si hay empate me quedo con el banco que tenga numero de indice menor
 def get_banco_mas_cercano(distancias, bancos_sin_visitar, banco_actual):
     distancia_min = 10000
     index_min = None
