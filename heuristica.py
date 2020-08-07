@@ -77,8 +77,3 @@ elapsed_time = time() - start_time
 print('Distancia: ' + str(distancia_total))
 print('Tour: ' + str(bancos_visitados))
 print("Tiempo: %0.10f segundos" % elapsed_time)
-
-distancia_optima = distancias[0][7] + distancias[7][3] + distancias[3][2] + distancias[2][6] + distancias[6][4] + \
-                   distancias[4][1] + distancias[1][9] + distancias[9][10] + distancias[10][5] + distancias[5][8] + \
-                   distancias[8][0]
-print(distancia_optima)
