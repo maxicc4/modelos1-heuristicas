@@ -11,6 +11,16 @@ def get_banco_mas_cercano(distancias, bancos_sin_visitar, banco_actual):
             index_min = index_banco
     return index_min
 
+# Se le pasa un tour y devuelve la distancia total
+def distancia_total(distancias, bancos_visitados):
+    anterior = bancos_visitados[0]
+    distancia = 0
+    for actual in bancos_visitados[1:]:
+        distancia += distancias[anterior][actual]
+        anterior = actual
+    # Vuelta a la sede
+    distancia += distancias[bancos_visitados[len(bancos_visitados) - 1]][0]
+    return distancia
 
 start_time = time()
 
@@ -45,11 +55,6 @@ bancos_sin_visitar_no_excluidos = bancos_sin_visitar.copy()
 while len(bancos_sin_visitar_no_excluidos):
     if (saldo_actual + transacciones[banco_mas_cercano] > 0) and (
             saldo_actual + transacciones[banco_mas_cercano] <= MAX_DINERO):
-        tramos.append({
-            'origen': banco_actual,
-            'destino': banco_mas_cercano,
-            'distancia': distancias[banco_actual][banco_mas_cercano]
-        })
         saldo_actual += transacciones[banco_mas_cercano]
         banco_actual = banco_mas_cercano
         bancos_visitados.append(banco_mas_cercano)
@@ -61,18 +66,8 @@ while len(bancos_sin_visitar_no_excluidos):
 
     banco_mas_cercano = get_banco_mas_cercano(distancias, bancos_sin_visitar_no_excluidos, banco_actual)
 
-# Agrego la vuelta a la sede
-tramos.append({
-    'origen': tramos[len(tramos) - 1]['destino'],
-    'destino': 0,
-    'distancia': distancias[tramos[len(tramos) - 1]['destino']][0]
-})
-distancia_total = 0
-for tramo in tramos:
-    distancia_total += tramo['distancia']
-
 elapsed_time = time() - start_time
 
-print('Distancia: ' + str(distancia_total))
+print('Distancia: ' + str(distancia_total(distancias, bancos_visitados)))
 print('Tour: ' + str(bancos_visitados))
 print("Tiempo: %0.10f segundos" % elapsed_time)
