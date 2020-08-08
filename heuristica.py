@@ -111,7 +111,3 @@ while hubo_cambio_tour:
 
 elapsed_time = time() - start_time
 print("Tiempo: %0.10f segundos" % elapsed_time)
-
-#tour_prueba = [0,1,2,3,4,5]
-#print(tour_prueba)
-#print(swap_2opt(tour_prueba, 1, 3))
