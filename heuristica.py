@@ -22,6 +22,21 @@ def distancia_total(distancias, bancos_visitados):
     distancia += distancias[bancos_visitados[len(bancos_visitados) - 1]][0]
     return distancia
 
+def swap_2opt(tour, i, k):
+    aux = tour[i+1:k+1]
+    nuevo_tour = tour[0:i+1]+aux[::-1]
+    if k != len(tour)-1:
+        nuevo_tour += tour[k+1:]
+    return nuevo_tour
+
+def cumple_restricciones_transacciones(transacciones, tour, max_dinero):
+    dinero_acumulado = 0
+    for banco in tour:
+        dinero_acumulado += transacciones[banco]
+        if dinero_acumulado < 0 or dinero_acumulado > max_dinero:
+            return False
+    return True
+
 start_time = time()
 
 distancias = [
@@ -67,7 +82,36 @@ while len(bancos_sin_visitar_no_excluidos):
     banco_mas_cercano = get_banco_mas_cercano(distancias, bancos_sin_visitar_no_excluidos, banco_actual)
 
 elapsed_time = time() - start_time
-
-print('Distancia: ' + str(distancia_total(distancias, bancos_visitados)))
+distancia = distancia_total(distancias, bancos_visitados)
+print('\n-------HEURISTICA DE CONSTRUCCIÓN-------')
+print('Distancia: ' + str(distancia))
 print('Tour: ' + str(bancos_visitados))
 print("Tiempo: %0.10f segundos" % elapsed_time)
+
+
+print('\n-------HEURISTICA DE MEJORAMIENTO-------')
+start_time = time()
+hubo_cambio_tour = True
+while hubo_cambio_tour:
+    hubo_cambio_tour = False
+    for i in range(len(bancos_visitados)-1):
+        for k in range(i+1, len(bancos_visitados)):
+            nuevo_tour = swap_2opt(bancos_visitados, i, k)
+            nueva_distancia = distancia_total(distancias, nuevo_tour)
+            if nueva_distancia < distancia and cumple_restricciones_transacciones(transacciones, nuevo_tour, MAX_DINERO):
+                bancos_visitados = nuevo_tour
+                distancia = nueva_distancia
+                hubo_cambio_tour = True
+                print('Nuevo tour encontrado')
+                print('Distancia: ' + str(distancia))
+                print('Tour: ' + str(bancos_visitados)+'\n')
+                break
+        if hubo_cambio_tour:
+            break
+
+elapsed_time = time() - start_time
+print("Tiempo: %0.10f segundos" % elapsed_time)
+
+#tour_prueba = [0,1,2,3,4,5]
+#print(tour_prueba)
+#print(swap_2opt(tour_prueba, 1, 3))
