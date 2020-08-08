@@ -68,7 +68,7 @@ while len(bancos_sin_visitar_no_excluidos):
 
 elapsed_time = time() - start_time
 distancia = distancia_total(distancias, bancos_visitados)
-print('\n-------HEURISTICA DE CONSTRUCCIÓN-------')
+print('\n-------HEURISTICA DE CONSTRUCCION-------')
 print('Distancia: ' + str(distancia))
 print('Tour: ' + str(bancos_visitados))
 print("Tiempo: %0.10f segundos" % elapsed_time)
